@@ -24,11 +24,7 @@ public class RoleDAOImpl implements RoleDAO{
 
     @Override
     public void saveRole(Role role) {
-        if (role.getId() == 0) {
-            entityManager.persist(role);
-        }
-
-        entityManager.merge(role);
+        entityManager.persist(role);
     }
 
     @Override

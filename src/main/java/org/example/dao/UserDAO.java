@@ -6,15 +6,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.List;
 
 public interface UserDAO {
-    public List<User> getAllUsers();
+    List<User> getAllUsers();
 
-    public void addUser(User user);
+    void addUser(User user);
 
-    public User getUser(long id);
+    User getUser(long id);
 
-    public void deleteUser(long id);
+    void deleteUser(long id);
 
-    public void updateUser(User user);
+    void updateUser(User user);
 
-    public UserDetails loadUserByUsername(String userName);
+    UserDetails loadUserByUsername(String userName);
+
+    void addInitUser(User user);
 }

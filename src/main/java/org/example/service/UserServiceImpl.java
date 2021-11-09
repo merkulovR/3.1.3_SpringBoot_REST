@@ -1,6 +1,8 @@
 package org.example.service;
 
+import org.example.dao.RoleDAO;
 import org.example.dao.UserDAO;
+import org.example.model.Role;
 import org.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +17,13 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
+    private final RoleDAO roleDAO;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserDAO userDAO, RoleDAO roleDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
+        this.roleDAO = roleDAO;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -58,5 +62,37 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         return userDAO.loadUserByUsername(userName);
+    }
+
+    /**
+     * Методы для создания тестовых юзеров
+     * Создаем в @PostConstructor'e LoginController'a
+     */
+    @Override
+    @Transactional
+    public void addInitUser(User user) {
+        userDAO.addInitUser(user);
+    }
+
+    @Override
+    @Transactional
+    public void addInitUsers() {
+        User admin = new User("Admin", "Adminov", "admin@mail.com", "admin", passwordEncoder.encode("pass"));
+        User user = new User("User", "Userov", "user@mail.com", "user", passwordEncoder.encode("pass"));
+        Role adminRole = new Role("ROLE_ADMIN");
+        Role userRole = new Role("ROLE_USER");
+
+        userDAO.addInitUser(admin);
+        userDAO.addInitUser(user);
+        roleDAO.saveRole(adminRole);
+        roleDAO.saveRole(userRole);
+
+        admin.addRole(adminRole);
+        admin.addRole(userRole);
+        user.addRole(userRole);
+
+        adminRole.addUser(admin);
+        userRole.addUser(admin);
+        userRole.addUser(user);
     }
 }
