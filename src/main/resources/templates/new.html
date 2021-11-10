@@ -25,7 +25,7 @@
   <br>
   <select id="roles" th:field="*{roles}" size="3" multiple="multiple">
     <option th:each="role : ${roles}"
-            th:value="${role.roleName}"
+            th:value="${role.getId()}"
             th:text="${role.roleName}"></option>
   </select>
   <label for="roles">Choose role(s) for user</label>

@@ -1,44 +1,44 @@
 package org.example.service;
 
-import org.example.dao.RoleDAO;
 import org.example.model.Role;
+import org.example.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService{
 
-    private final RoleDAO roleDAO;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public RoleServiceImpl(RoleDAO roleDAO) {
-        this.roleDAO = roleDAO;
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     @Override
     @Transactional
-    public Set<Role> getAllRoles() {
-        return roleDAO.getAllRoles();
+    public List<Role> getAllRoles() {
+        return roleRepository.findAll();
     }
 
     @Override
     @Transactional
     public void saveRole(Role role) {
-        roleDAO.saveRole(role);
+        roleRepository.save(role);
     }
 
     @Override
     @Transactional
-    public Role getRole(String name) {
-        return roleDAO.getRole(name);
+    public Role getRole(Long id) {
+        return roleRepository.getById(id);
     }
 
     @Override
     @Transactional
-    public void deleteRole(String name) {
-        roleDAO.deleteRole(name);
+    public void deleteRole(Long id) {
+        roleRepository.deleteById(id);
     }
 }

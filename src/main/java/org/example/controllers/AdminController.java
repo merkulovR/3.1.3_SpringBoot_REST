@@ -1,24 +1,24 @@
-package org.example.controller;
+package org.example.controllers;
 
 import org.example.model.Role;
 import org.example.model.User;
 import org.example.service.RoleService;
 import org.example.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -50,11 +50,11 @@ public class AdminController {
     @PostMapping(value = "")
     public String createUser(@RequestParam String name, @RequestParam String lastName,
                              @RequestParam String email, @RequestParam String username,
-                             @RequestParam String password, @RequestParam List<String> roles) {
+                             @RequestParam String password, @RequestParam List<Long> roleIds) {
         Set<Role> userRoles = new HashSet<>();
 
-        for(String role: roles){
-            userRoles.add(roleService.getRole(role));
+        for(Long roleId: roleIds){
+            userRoles.add(roleService.getRole(roleId));
         }
 
         User user = new User(name, lastName, email, username, password);
@@ -73,11 +73,11 @@ public class AdminController {
     }
 
     @PutMapping("/update/{id}")
-    public String updateUser( @ModelAttribute("user") User user, @RequestParam List<String> roles) {
+    public String updateUser( @ModelAttribute("user") User user, @RequestParam List<Long> roleIds) {
         Set<Role> userRoles = new HashSet<>();
 
-        for(String role: roles){
-            userRoles.add(roleService.getRole(role));
+        for(Long roleId: roleIds){
+            userRoles.add(roleService.getRole(roleId));
         }
 
         user.setRoles(userRoles);
