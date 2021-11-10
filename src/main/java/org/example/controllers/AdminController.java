@@ -50,10 +50,10 @@ public class AdminController {
     @PostMapping(value = "")
     public String createUser(@RequestParam String name, @RequestParam String lastName,
                              @RequestParam String email, @RequestParam String username,
-                             @RequestParam String password, @RequestParam List<Long> roleIds) {
+                             @RequestParam String password, @RequestParam List<Long> roles) {
         Set<Role> userRoles = new HashSet<>();
 
-        for(Long roleId: roleIds){
+        for(Long roleId: roles){
             userRoles.add(roleService.getRole(roleId));
         }
 
@@ -73,10 +73,10 @@ public class AdminController {
     }
 
     @PutMapping("/update/{id}")
-    public String updateUser( @ModelAttribute("user") User user, @RequestParam List<Long> roleIds) {
+    public String updateUser( @ModelAttribute("user") User user, @RequestParam List<Long> roles) {
         Set<Role> userRoles = new HashSet<>();
 
-        for(Long roleId: roleIds){
+        for(Long roleId: roles){
             userRoles.add(roleService.getRole(roleId));
         }
 
