@@ -5,6 +5,7 @@ import org.example.model.User;
 import org.example.service.RoleService;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -75,11 +76,13 @@ public class AdminController {
     @PutMapping("/update/{id}")
     public String updateUser( @ModelAttribute("user") User user, @RequestParam List<Long> roles) {
         Set<Role> userRoles = new HashSet<>();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(4);
 
         for(Long roleId: roles){
             userRoles.add(roleService.getRole(roleId));
         }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(userRoles);
         userService.updateUser(user);
 
