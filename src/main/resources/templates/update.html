@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <div style='float: right; '><a th:href="@{/logout}">LOGOUT</a></div>
     <title>Edit User details</title>
 </head>
 <body>
+<div style='float: right; '><a th:href="@{/logout}">LOGOUT</a></div>
 
 <form th:method="PUT" th:action="@{/admin/update/{id}(id=${user.getId()})}" th:object="${user}" >
     <input type="hidden" th:field="*{id}" id="id" value="*{id}">

@@ -2,11 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <div style='float: right; '><a th:href="@{/logout}">LOGOUT</a></div>
     <title>User's page</title>
-</span>
 </head>
 <body>
+<div style='float: right; '><a th:href="@{/logout}">LOGOUT</a></div>
 <h1>Welcome to your own page!</h1>
 <table border="2">
     <tr>
@@ -17,9 +16,7 @@
         <th>Username</th>
         <th>Password</th>
         <th>Roles</th>
-
     </tr>
-
     <tr th:object="${user}">
         <td th:text="${user.id}">ID</td>
         <td th:text="${user.name}">getName</td>
@@ -34,15 +31,6 @@
             </ul>
         </td>
     </tr>
-<!--    <tr>-->
-<!--        <th>-->
-<!--            <form th:method="GET" th:action="@{/logout}">-->
-<!--                <input type="submit" value="logout"/>-->
-<!--            </form>-->
-<!--        </th>-->
-<!--    </tr>-->
-
 </table>
-
 </body>
 </html>

@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <div style='float: right; '><a th:href="@{/logout}">LOGOUT</a></div>
   <title>New User</title>
 </head>
 <body>
+<div style='float: right; '><a th:href="@{/logout}">LOGOUT</a></div>
 <h1>Add new User</h1>
 <form th:method="POST" th:action="@{/admin}" th:object="${user}">
   <input required type="text" th:field="${user.name}" id="name"/>

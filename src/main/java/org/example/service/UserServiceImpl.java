@@ -49,6 +49,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(User user) {
+        if (!user.getPassword().equals(getUser(user.getId()).getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         userRepository.save(user);
     }
 
@@ -64,25 +68,20 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Методы для создания тестовых юзеров
+     * Метод для создания тестовых юзеров
      * Создаем в @PostConstructor'e LoginController'a
      */
-    @Override
-    @Transactional
-    public void addInitUser(User user) {
-        userRepository.save(user);
-    }
 
     @Override
     @Transactional
     public void addInitUsers() {
-        User admin = new User("Admin", "Adminov", "admin@mail.com", "admin", passwordEncoder.encode("pass"));
-        User user = new User("User", "Userov", "user@mail.com", "user", passwordEncoder.encode("pass"));
+        User admin = new User("Admin", "Adminov", "admin@mail.com", "admin", "pass");
+        User user = new User("User", "Userov", "user@mail.com", "user", "pass");
         Role adminRole = new Role("ROLE_ADMIN");
         Role userRole = new Role("ROLE_USER");
 
-        userRepository.save(admin);
-        userRepository.save(user);
+        addUser(admin);
+        addUser(user);
         roleRepository.save(adminRole);
         roleRepository.save(userRole);
 
