@@ -1,10 +1,10 @@
 package org.example.controllers;
 
-import org.example.model.Role;
 import org.example.model.User;
 import org.example.service.RoleService;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -35,58 +35,29 @@ public class AdminController {
 
     @GetMapping
     public String printUsers(Model model) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("user", user);
+        model.addAttribute("newUser", new User());
         model.addAttribute("users", userService.getAllUsers());
-
         return "/admin";
     }
 
-    @GetMapping("/new")
-    public String addNewUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("roles", roleService.getAllRoles());
-
-        return "new";
-    }
-
-    @PostMapping(value = "")
-    public String createUser(@RequestParam String name, @RequestParam String lastName,
-                             @RequestParam String email, @RequestParam String username,
-                             @RequestParam String password, @RequestParam List<Long> roles) {
-        Set<Role> userRoles = new HashSet<>();
-
-        for(Long roleId: roles){
-            userRoles.add(roleService.getRole(roleId));
-        }
-
-        User user = new User(name, lastName, email, username, password);
-        user.setRoles(userRoles);
+    @PostMapping("/new")
+    public String addNewUser(@ModelAttribute("newUser") User user, @RequestParam("roles") ArrayList<Long> roles) {
+        user.setRoles(roles.stream().map(roleService::getRole).collect(Collectors.toSet()));
         userService.addUser(user);
-
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/{id}/update")
-    public String update(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.getUser(id));
-        model.addAttribute("roles", roleService.getAllRoles());
-
-        return "/update";
-    }
-
     @PutMapping("/update/{id}")
-    public String updateUser( @ModelAttribute("user") User user, @RequestParam List<Long> roles) {
-        Set<Role> userRoles = new HashSet<>();
-
-        for(Long roleId: roles){
-            userRoles.add(roleService.getRole(roleId));
-        }
-
-        user.setRoles(userRoles);
+    public String updateUser(@ModelAttribute("user") User user, @RequestParam("roles") List<Long> roles) {
+        user.setRoles(roles.stream().map(roleService::getRole).collect(Collectors.toSet()));
         userService.updateUser(user);
 
         return "redirect:/admin";
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.deleteUser(id);
 

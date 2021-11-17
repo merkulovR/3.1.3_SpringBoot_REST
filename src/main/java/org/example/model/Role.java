@@ -2,10 +2,18 @@ package org.example.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-
-import javax.persistence.*;
-import java.util.*;
 
 @Entity
 @Table(name = "roles")
@@ -49,7 +57,7 @@ public class Role implements GrantedAuthority {
     }
 
     public String getRoleName() {
-        return roleName;
+        return roleName.replace("ROLE_", "");
     }
 
     public void setRoleName(String role) {
