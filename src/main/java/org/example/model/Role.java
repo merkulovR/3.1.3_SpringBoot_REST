@@ -16,6 +16,7 @@ import java.util.Objects;
 
 
 @Entity
+//@JsonIgnoreProperties("users")
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
 

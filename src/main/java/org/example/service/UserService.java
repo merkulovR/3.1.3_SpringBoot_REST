@@ -11,9 +11,9 @@ public interface UserService extends UserDetailsService {
     List<User> getAllUsers();
     void addUser(User user);
     User getUser(long id);
-    void updateUser(User user);
+    boolean updateUser(User user);
     @Override
     UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;
-    void deleteUser(long id);
+    boolean deleteUser(long id);
     void addInitUsers();
 }

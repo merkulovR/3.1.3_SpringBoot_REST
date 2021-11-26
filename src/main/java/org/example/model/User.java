@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Entity
+//@JsonIgnoreProperties("roles")
 @Table(name = "users")
 public class User implements UserDetails {
 
