@@ -40,7 +40,7 @@ public class MyRestController {
         List<UserDto> userDtoList = new ArrayList<>();
 
         for (User u : users) {
-            userDtoList.add(UserDto.fromUser(u)); // РОЛИ ЗДЕСЬ ЛОНГИ!!! НУЖНО ИСПРАВИТЬ!!!
+            userDtoList.add(UserDto.fromUser(u));
         }
 
         return !userDtoList.isEmpty()
@@ -64,8 +64,9 @@ public class MyRestController {
     @PostMapping("/new")
     public ResponseEntity<User> addNewUser(@RequestBody UserDto userDto) {
         User user = userDto.toUser();
-        user.setRoles(Arrays.stream(userDto.getRoles()).mapToObj(roleService::getRole).collect(Collectors.toSet()));
+        user.setRoles(Arrays.stream(userDto.getRoles()).map(roleService::getByRoleName).collect(Collectors.toSet()));
         userService.addUser(user);
+
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
@@ -73,7 +74,7 @@ public class MyRestController {
     public ResponseEntity<?> updateUser(@PathVariable("id") int id, @RequestBody UserDto userDto) {
         User user = userDto.toUser();
         user.setId(id);
-        user.setRoles(Arrays.stream(userDto.getRoles()).mapToObj(roleService::getRole).collect(Collectors.toSet()));
+        user.setRoles(Arrays.stream(userDto.getRoles()).map(roleService::getByRoleName).collect(Collectors.toSet()));
         final boolean result = userService.updateUser(user);
 
         return result

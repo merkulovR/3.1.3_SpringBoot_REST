@@ -9,13 +9,13 @@ public class UserDto {
     private String lastname;
     private String email;
     private String username;
-    private long[] roles;
+    private String[] roles;
     private String password;
 
     public UserDto() {
     }
 
-    public UserDto(long id, String name, String lastname, String email, String username, long[] roles, String password) {
+    public UserDto(long id, String name, String lastname, String email, String username, String[] roles, String password) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -43,27 +43,10 @@ public class UserDto {
         userDTO.setEmail(user.getEmail());
         userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
-        userDTO.setRoles(user.getRoles().stream().mapToLong(Role::getId).toArray());
+        userDTO.setRoles(user.getRoles().stream().map(Role::getRoleName).sorted().toArray(String[]::new));
+//        userDTO.setRoles(user.getRoles().stream().mapToLong(Role::getId).toArray());
         return userDTO;
     }
-
-//    public String getSortedDtoRolesNames() {
-//        StringBuilder sortedRolesNames = new StringBuilder();
-//        TreeSet<String> roleNames = new TreeSet<>();
-//
-//        for (long role : roles) {
-//            if (role == 1L) {
-//                roleNames.add("ADMIN");
-//            }
-//            if (role == 2L) {
-//                roleNames.add("USER");
-//            }
-//        }
-//
-//        roleNames.forEach(n -> sortedRolesNames.append(n).append(' '));
-//
-//        return sortedRolesNames.toString();
-//    }
 
     public long getId() {
         return id;
@@ -105,11 +88,11 @@ public class UserDto {
         this.username = username;
     }
 
-    public long[] getRoles() {
+    public String[] getRoles() {
         return roles;
     }
 
-    public void setRoles(long[] roles) {
+    public void setRoles(String[] roles) {
         this.roles = roles;
     }
 
