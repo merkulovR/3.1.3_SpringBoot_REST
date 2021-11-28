@@ -1,5 +1,5 @@
 function editModal(id) {
-    fetch(`admin/users/` + id).then(res => {
+    fetch(`http://localhost:8080/admin/users/` + id).then(res => {
         res.json().then(user => {
             $('#editId').attr('value', user.id)
             $('#editName').attr('value', user.name)
@@ -22,13 +22,14 @@ function updateUser() {
     let password = document.getElementById("editPassword").value;
     let roles = (Array.from(document.getElementById("editRoles").selectedOptions).map(options => options.value))
 
-    let user = {
+    let userDto = {
         id: id,
         name: name,
         lastname: lastname,
         email: email,
         username: username,
         password: password,
+        roles: roles
     }
 
     fetch('admin/update/' + id, {
@@ -37,7 +38,7 @@ function updateUser() {
             "Accept": "application/json, text/plain, */*",
             "Content-type":"application/json"
         },
-        body:JSON.stringify(user)
+        body:JSON.stringify(userDto)
     }).finally(() => {
         $('#editModal').modal("hide")
         showUsersTable();

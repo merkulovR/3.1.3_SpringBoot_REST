@@ -3,6 +3,7 @@ package org.example.model;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.Transient;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
@@ -23,8 +24,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Entity
-//@JsonIgnoreProperties("roles")
+//@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "users")
+@Transient
 public class User implements UserDetails {
 
     @Id

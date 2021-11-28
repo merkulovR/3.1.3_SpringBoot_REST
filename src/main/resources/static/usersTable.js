@@ -48,15 +48,6 @@ function showUsersTable() {
                     if (usersData.length > 0) {
                         let temp = "";
                         usersData.forEach(user => {
-                            // temp += "<tr>";
-                            // temp += "<td>" + user.id + "</td>";
-                            // temp += "<td>" + user.name + "</td>";
-                            // temp += "<td>" + user.lastname + "</td>";
-                            // temp += "<td>" + user.email + "</td>";
-                            // temp += "<td>" + user.username + "</td>";
-                            // temp += "<td>" + user.roles + "</td>";
-                            // temp += "<td><button class=\"btn btn-primary\" id=\"editButton\" usersData-bs-toggle=\"modal\" usersData-bs-target=\"#editModal\" onclick='editModal(" + user.id + ")'>Edit</button></td>";
-                            // temp += "<td><button class=\"btn btn-danger\" id=\"deleteButton\" usersData-bs-toggle=\"modal\" usersData-bs-target=\"#deleteModal\" onclick='deleteModal(" + user.id + ")'>Delete</button></td></tr>";
                             temp += `<tr>
                                 <td>${user.id}</td>
                                 <td>${user.name}</td>
@@ -64,17 +55,17 @@ function showUsersTable() {
                                 <td>${user.email}</td>
                                 <td>${user.username}</td>
                                 <td>${user.roles}</td>
-                                <td><button class="btn btn-primary" id="editButton" data-bs-toggle="modal" data-bs-target="#editModal" onclick='editModal(${user.id})'>Edit</button></td>
-                                <td><button class="btn btn-danger" id="deleteButton" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick='deleteModal(${user.id})'>Delete</button></td>
+                                <td><button class="btn btn-primary" id="editButton" data-toggle="modal" data-target="#editModal" onclick='editModal(${user.id})'>Edit</button></td>
+                                <td><button class="btn btn-danger" id="deleteButton" data-toggle="modal" data-target="#deleteModal" onclick='deleteModal(${user.id})'>Delete</button></td>
                                 </tr>`
                         })
                         document.getElementById("usersData").innerHTML = temp;
                     }
                 }
             )
-
         })
-    $('a[data-bs-toggle="editModal"]').on('hidden', function() {
-        $(this).data('editModal').$element.removeData();
-    });
+
+    $('a[data-toggle="editModal"]').on('hidden', function() {
+        $(this).data('editModal').$element.removeData()
+    })
 }

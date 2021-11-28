@@ -3,19 +3,19 @@ package org.example.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDTO {
+public class UserDto {
     private long id;
     private String name;
     private String lastname;
     private String email;
     private String username;
-    private String[] roles;
+    private long[] roles;
     private String password;
 
-    public UserDTO() {
+    public UserDto() {
     }
 
-    public UserDTO(long id, String name, String lastname, String email, String username, String[] roles, String password) {
+    public UserDto(long id, String name, String lastname, String email, String username, long[] roles, String password) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -25,18 +25,45 @@ public class UserDTO {
         this.password = password;
     }
 
-    public UserDTO fromUser(User user) {
-        UserDTO userDTO = new UserDTO();
+    public User toUser() {
+        return new User(
+                this.name,
+                this.lastname,
+                this.email,
+                this.username,
+                this.password
+        );
+    }
+
+    public static UserDto fromUser(User user) {
+        UserDto userDTO = new UserDto();
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
         userDTO.setLastname(user.getLastname());
         userDTO.setEmail(user.getEmail());
         userDTO.setUsername(user.getUsername());
-        userDTO.setRoles(user.getSortedRolesNames().split(" "));
         userDTO.setPassword(user.getPassword());
-
+        userDTO.setRoles(user.getRoles().stream().mapToLong(Role::getId).toArray());
         return userDTO;
     }
+
+//    public String getSortedDtoRolesNames() {
+//        StringBuilder sortedRolesNames = new StringBuilder();
+//        TreeSet<String> roleNames = new TreeSet<>();
+//
+//        for (long role : roles) {
+//            if (role == 1L) {
+//                roleNames.add("ADMIN");
+//            }
+//            if (role == 2L) {
+//                roleNames.add("USER");
+//            }
+//        }
+//
+//        roleNames.forEach(n -> sortedRolesNames.append(n).append(' '));
+//
+//        return sortedRolesNames.toString();
+//    }
 
     public long getId() {
         return id;
@@ -78,11 +105,11 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String[] getRoles() {
+    public long[] getRoles() {
         return roles;
     }
 
-    public void setRoles(String[] roles) {
+    public void setRoles(long[] roles) {
         this.roles = roles;
     }
 

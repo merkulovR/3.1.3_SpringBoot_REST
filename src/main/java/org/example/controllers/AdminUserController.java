@@ -10,13 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-//@RequestMapping("/user")
-public class UserController {
+public class AdminUserController {
 
-	private UserService userService;
+	private final UserService userService;
 
 	@Autowired
-	public UserController(UserService userService) {
+	public AdminUserController(UserService userService) {
 		this.userService = userService;
 	}
 

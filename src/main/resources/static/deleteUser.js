@@ -1,6 +1,5 @@
 function deleteModal(id) {
-
-    fetch(`admin/delete/` + id)
+    fetch(`admin/users/` + id)
         .then(res => res.json())
         .then(user => {
             $('#deleteId').attr('value', user.id)
@@ -14,14 +13,12 @@ function deleteModal(id) {
 }
 
 function deleteUser() {
-
     let id = document.getElementById("deleteId").value;
     let name = document.getElementById("deleteName").value;
     let lastname = document.getElementById("deleteLastname").value;
     let email = document.getElementById("deleteEmail").value;
     let username = document.getElementById("deleteUsername").value;
     let password = document.getElementById("deletePassword").value;
-
 
     let user = {
         id: id,
@@ -31,6 +28,7 @@ function deleteUser() {
         username: username,
         password: password
     }
+
     console.log(user)
 
     fetch('admin/delete/' + id, {

@@ -6,7 +6,7 @@ function createUser() {
     let password = document.getElementById("newPassword").value
     let roles = Array.from(document.getElementById("newRoles").selectedOptions).map(options => options.value)
 
-    let user = {
+    let userDto = {
         name: name,
         lastname: lastname,
         email: email,
@@ -15,15 +15,15 @@ function createUser() {
         roles: roles
     }
 
-    console.log(user)
+    console.log(userDto)
 
     fetch("admin/new", {
         method:"POST",
         headers: {
-            // 'Accept': 'application/json',
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify(userDto)
     }).then(resp => {
         console.log(resp.text());
         }).then(() => showUsersTable())
